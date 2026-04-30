@@ -34,7 +34,7 @@ script = ExtResource("3_ktf7x")
 [node name="StaticBodies" type="Node2D" parent="."]
 
 [node name="Floor" type="StaticBody2D" parent="StaticBodies"]
-position = Vector2(175.67, 635)
+position = Vector2(175.67, 600)
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/Floor"]
 position = Vector2(398.33002, 0)
@@ -68,7 +68,7 @@ shape = SubResource("RectangleShape2D_dfgsd")
 debug_color = Color(0.8534184, 0.34179854, 0.38088116, 0.41960785)
 
 [node name="DoublePEnter" type="Area2D" parent="."]
-position = Vector2(777.45, 615)
+position = Vector2(777.45, 580)
 
 [node name="CollisionShapeEnter" type="CollisionShape2D" parent="DoublePEnter"]
 position = Vector2(-11.450012, 0)
