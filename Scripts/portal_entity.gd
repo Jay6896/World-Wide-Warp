@@ -12,8 +12,10 @@ func custom_move_and_slide(delta: float):
 		
 		if collision.get_normal().dot(Vector2.UP) > 0.7:
 			is_grounded = true
-			
+		
 		if portal: return
+		
+			
 		else:
 			velocity = velocity.slide(collision.get_normal())
 			
@@ -28,9 +30,10 @@ func find_portal_at_collision(collision: KinematicCollision2D) -> Area2D:
 	var space_state = get_world_2d().direct_space_state
 	var query = PhysicsPointQueryParameters2D.new()
 	
-	query.position = collision.get_position() + (collision.get_normal() * -2.0)
+	query.position = collision.get_position() + (collision.get_normal() * 2.0)
 	query.collide_with_areas = true
-	query.collide_with_bodies = false
+	query.collision_mask = 4294967295
+	
 	
 	var results = space_state.intersect_point(query)
 	for result in results:

@@ -18,6 +18,10 @@ config/icon="res://icon.svg"
 
 project/assembly_name="PA Game Jam"
 
+[global_group]
+
+portals=""
+
 [input]
 
 ui_left={

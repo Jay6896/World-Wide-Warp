@@ -75,7 +75,6 @@ debug_color = Color(0.8534184, 0.34179854, 0.38088116, 0.41960785)
 
 [node name="Platform" type="StaticBody2D" parent="StaticBodies"]
 position = Vector2(175.67, 150)
-collision_layer = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/Platform"]
 position = Vector2(412.33002, 313.5)
