@@ -1,55 +1,49 @@
+# CHANGED grapple_beam.gd
 extends Node2D
-
-@export var minRopeLength := 20
-@export var maxRopeLength := 200
 
 @onready var anchor: StaticBody2D = %Anchor
 @onready var pin_joint_2d: PinJoint2D = %PinJoint2D
 @onready var player_anchor: RigidBody2D = %PlayerAnchor
 @onready var line_2d: Line2D = %Line2D
 
-var speed = 3
+var swing_force = 2000.0 # Applied continuously for smooth swinging
+var player_node: CharacterBody2D
 
-func start_hook(hookPosition):
+func start_hook(hookPosition, player):
 	anchor.global_position = hookPosition
+	player_node = player
 	
-	var player = get_tree().get_first_node_in_group("player")
+	# Spawn the rigid body exactly where the player is. The PinJoint2D will 
+	# naturally lock this exact distance as your physics-based rope length!
 	player_anchor.global_position = player.global_position
+	
+	# Transfer the player's current falling speed INTO the rope so you don't jolt to a stop
+	player_anchor.linear_velocity = player.velocity
+	
 	player.reparent(player_anchor)
+	player.position = Vector2.ZERO
 
-func _physics_process(_delta: float) -> void:
-	var distanceToAnchor = player_anchor.global_position.distance_to(anchor.global_position)
+func _physics_process(delta: float) -> void:
+	var direction := Input.get_axis("left", "right")
 	
-	if Input.is_action_pressed("ui_right"):
-		player_anchor.apply_central_impulse(player_anchor.global_transform.x * speed)
-	elif Input.is_action_pressed("ui_left"):
-		player_anchor.apply_central_impulse(player_anchor.global_transform.x * -speed)
-	elif Input.is_action_pressed("ui_down"):
-		if distanceToAnchor >= maxRopeLength: 
-			return
+	if direction != 0:
+		# Use force instead of impulse for a smooth, natural pendulum push
+		player_anchor.apply_central_force(Vector2(direction * swing_force, 0))
 	
-		pin_joint_2d.node_b = ""
-		player_anchor.global_position += player_anchor.global_transform.y * speed / 2
-		pin_joint_2d.node_b = player_anchor.get_path()
-	elif Input.is_action_pressed("ui_up"):
-		if distanceToAnchor <= minRopeLength: 
-			return
-		
-		pin_joint_2d.node_b = ""
-		player_anchor.global_position -= player_anchor.global_transform.y * speed / 2
-		pin_joint_2d.node_b = player_anchor.get_path()
-		
-	if Input.is_action_just_pressed("swing") or Input.is_action_just_pressed("jump"):
+	# Pressing jump OR swing detaches the rope and launches the player
+	if Input.is_action_just_pressed("jump") or Input.is_action_just_pressed("swing"):
 		_leave_rope()
 
 func _leave_rope():
-	await get_tree().create_timer(0.1).timeout
+	if not is_instance_valid(player_node): return
 	
-	var player = get_tree().get_first_node_in_group("player")
-	player.reparent(get_tree().current_scene)
-	player.set_active(true)
-	player.rotation = 0
+	# Pass the physical momentum of the swing BACK to the player!
+	player_node.velocity = player_anchor.linear_velocity
 	
+	# Instantly detach and reactivate normal physics
+	player_node.reparent(player_node.get_tree().current_scene)
+	player_node.rotation = 0
+	player_node.is_swinging = false
 	
 	queue_free()
 
