@@ -1,5 +1,13 @@
 # Pan-African-Game-Jam
+
 Repo for my submission for the Pan African Game Jam
 
-**physics_test.tscn -** Test scene to play with physics properties using
-Godot 4 documentation
+## Scenes
+
+**test-level.tscn -** Level for testing game portal and swinging physics
+
+**player.tscn -** Scene containing the Player Node and its Child Nodes
+
+## Scripts
+
+**physics_test.gd -** Script containing player movement and portal physics
