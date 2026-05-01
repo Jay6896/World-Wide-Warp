@@ -50,6 +50,7 @@ func _leave_rope():
 	player.set_active(true)
 	player.rotation = 0
 	
+	
 	queue_free()
 
 func _process(_delta: float) -> void:
