@@ -1,0 +1,58 @@
+[gd_scene load_steps=7 format=3 uid="uid://cdtd4dbhu8k1"]
+
+[ext_resource type="Script" uid="uid://b508ytf50m7vl" path="res://Scripts/camera_2d.gd" id="1_fb4wc"]
+[ext_resource type="PackedScene" uid="uid://ce3bvw1tdbl2e" path="res://Scenes/Objects/player.tscn" id="2_x3kut"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xd0k8"]
+size = Vector2(1839, 528)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_ugdxg"]
+size = Vector2(533.25, 54)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h4b51"]
+size = Vector2(747, 258)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mo4ii"]
+size = Vector2(690, 291)
+
+[node name="TestLevel" type="Node2D"]
+
+[node name="Camera2D" type="Camera2D" parent="."]
+position = Vector2(220.37, 340)
+script = ExtResource("1_fb4wc")
+
+[node name="Player" parent="." instance=ExtResource("2_x3kut")]
+
+[node name="StaticBodies" type="Node2D" parent="."]
+
+[node name="Floor" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(175.67, 635)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/Floor"]
+position = Vector2(703.83, 256)
+shape = SubResource("RectangleShape2D_xd0k8")
+debug_color = Color(0.8534184, 0.34179854, 0.38088116, 0.41960785)
+
+[node name="Platform2" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(175.67, 150)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/Platform2"]
+position = Vector2(647.33, 107)
+shape = SubResource("RectangleShape2D_ugdxg")
+debug_color = Color(0.8534184, 0.34179854, 0.38088116, 0.41960785)
+
+[node name="Platform4" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(175.67, 150)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/Platform4"]
+position = Vector2(1260.33, -232)
+shape = SubResource("RectangleShape2D_h4b51")
+debug_color = Color(0.8534184, 0.34179854, 0.38088116, 0.41960785)
+
+[node name="Platform7" type="StaticBody2D" parent="StaticBodies"]
+position = Vector2(175.67, 150)
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBodies/Platform7"]
+position = Vector2(93.33002, -205)
+shape = SubResource("RectangleShape2D_mo4ii")
+debug_color = Color(0.8534184, 0.34179854, 0.38088116, 0.41960785)

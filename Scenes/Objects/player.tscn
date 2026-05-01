@@ -23,6 +23,9 @@ texture = ExtResource("2_dfgsd")
 position = Vector2(-0.5, 0.5)
 shape = SubResource("RectangleShape2D_picsy")
 
+[node name="RayCast2D" type="RayCast2D" parent="CharacterBody2D"]
+target_position = Vector2(400, 0)
+
 [node name="DoublePEnter" type="Area2D" parent="."]
 position = Vector2(220.37, 615)
 script = ExtResource("4_5uqce")

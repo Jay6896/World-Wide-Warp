@@ -12,14 +12,22 @@ var portal_entrances:int = 0
 #var current_speed:float = 0
 @onready var portal_enter = $"../DoublePEnter"
 @onready var portal_exit = $"../DoublePExit"
+@onready var ray_cast_2d: RayCast2D = $RayCast2D
+@onready var collision_shape_2d: CollisionShape2D = $CollisionShape2D
+
+const GRAPPLE_BEAM = preload("res://Scenes/Objects/grapple_beam.tscn")
+
 
 var air:bool = false
 var air_time = 0.0
 
 var run_time = 0.0
 
+func _ready() -> void:
+	add_to_group("player")
 
 func _physics_process(delta: float) -> void:
+	_set_ray_cast_direction()
 	portal_enter.visible = false
 	portal_exit.visible = false
 	portal_enter.collision_mask = 2
@@ -61,7 +69,9 @@ func _physics_process(delta: float) -> void:
 		portal_exit.collision_mask = 1
 		portal_exit.visible = true
 	
-	
+	if Input.is_action_just_pressed("swing"):
+		_use_grappling_hook()
+		return
 	#print("airtime val", air_time)
 
 
@@ -105,6 +115,33 @@ func _physics_process(delta: float) -> void:
 	##velocity.y += MASS
 	##print(typeof(gravity))
 	#
+
+# grappler
+func _set_ray_cast_direction():
+	var lookDirection = Input.get_vector("ui_left", "ui_right", "ui_up", "ui_down")
+	
+	if lookDirection.y > 0: return
+	
+	ray_cast_2d.look_at(global_position + lookDirection)
+
+func _use_grappling_hook():
+	if not ray_cast_2d.is_colliding(): return
+	
+	set_active(false)
+	
+	#animated_sprite_2d.play("idle")
+	
+	var startOffSet = Vector2(0,-30)
+	global_position += startOffSet
+	
+	var grapplingHookNode = GRAPPLE_BEAM.instantiate()
+	get_tree().current_scene.add_child(grapplingHookNode)
+	grapplingHookNode.start_hook(ray_cast_2d.get_collision_point())
+
+func set_active(boolean: bool):
+	set_physics_process(boolean)
+	collision_shape_2d.disabled = not boolean
+
 # blue portal
 func _on_double_p_enter_body_entered(body: Node2D) -> void:
 	if body != self or not blue_enter: return
