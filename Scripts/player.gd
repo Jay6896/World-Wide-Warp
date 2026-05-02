@@ -25,6 +25,7 @@ var run_time = 0.0
 
 var is_swinging: bool = false
 var active_grapple: Node2D = null
+var saved_collision_mask: int = 1
 
 func _ready() -> void:
 	add_to_group("player")
@@ -150,12 +151,19 @@ func _set_ray_cast_direction():
 func _use_grappling_hook():
 	if not ray_cast_2d.is_colliding(): return
 	
+	var hook_point = ray_cast_2d.get_collision_point()
+	
+	if global_position.distance_to(hook_point) < 60.0:
+		return
+	
 	is_swinging = true
+	
+	saved_collision_mask = collision_mask
+	collision_mask = 0
 	active_grapple = GRAPPLE_BEAM.instantiate()
 	get_tree().current_scene.add_child(active_grapple)
 	
-	active_grapple.start_hook(ray_cast_2d.get_collision_point(), self)
-
+	active_grapple.start_hook(hook_point, self)
 # blue portal
 func _on_double_p_enter_body_entered(body: Node2D) -> void:
 	if body != self or not blue_enter: return

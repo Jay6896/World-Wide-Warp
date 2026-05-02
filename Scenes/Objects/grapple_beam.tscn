@@ -15,7 +15,7 @@ unique_name_in_owner = true
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Anchor"]
 shape = SubResource("RectangleShape2D_8xbyu")
 
-[node name="PinJoint2D" type="PinJoint2D" parent="Anchor"]
+[node name="PinJoint2D" type="DampedSpringJoint2D" parent="Anchor"]
 unique_name_in_owner = true
 node_a = NodePath("..")
 node_b = NodePath("../../PlayerAnchor")
