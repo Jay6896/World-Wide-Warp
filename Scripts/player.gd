@@ -109,7 +109,8 @@ func _physics_process(delta: float) -> void:
 
 	if direction:
 		run_time += delta
-		velocity.x = direction * SPEED
+		if abs(velocity.x) < SPEED or sign(velocity.x) != sign(direction):
+			velocity.x = direction * SPEED
 		# acceleration
 		if run_time > 1.0:
 			GRAVITY = 1980
@@ -124,8 +125,7 @@ func _physics_process(delta: float) -> void:
 		#GRAVITY = 2000
 	else:
 		run_time = 0
-		velocity.x = 0
-		velocity.x = move_toward(velocity.x, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, SPEED * 2 * delta)
 
 	#print("direction", direction)
 	#print("velocity ", velocity.x)

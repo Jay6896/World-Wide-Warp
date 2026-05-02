@@ -17,15 +17,14 @@ shape = SubResource("RectangleShape2D_8xbyu")
 
 [node name="PinJoint2D" type="DampedSpringJoint2D" parent="Anchor"]
 unique_name_in_owner = true
-node_a = NodePath("..")
-node_b = NodePath("../../PlayerAnchor")
 
 [node name="PlayerAnchor" type="RigidBody2D" parent="."]
 unique_name_in_owner = true
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="PlayerAnchor"]
-position = Vector2(0, 47)
+position = Vector2(0, 21)
 shape = SubResource("RectangleShape2D_w8y5f")
+debug_color = Color(0.9804829, 0, 0.3832663, 0.41960785)
 
 [node name="Line2D" type="Line2D" parent="."]
 unique_name_in_owner = true
