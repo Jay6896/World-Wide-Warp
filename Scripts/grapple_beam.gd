@@ -6,6 +6,7 @@ extends Node2D
 @onready var line_2d: Line2D = %Line2D
 
 @export var swing_force = 1500.0 # Applied continuously for smooth swinging
+@export var release_multiplier: float = 1.25 # 1.0 is normal, 1.5 is a 50% boost!
 var player_node: CharacterBody2D
 var rope_length: float = 0.0
 
@@ -101,7 +102,7 @@ func _leave_rope():
 	player_anchor.remove_collision_exception_with(player_node)
 	
 	# Pass the physical momentum of the swing BACK to the player!
-	player_node.velocity = player_anchor.linear_velocity
+	player_node.velocity = player_anchor.linear_velocity * release_multiplier
 	
 	player_node.collision_mask = player_node.saved_collision_mask	
 	
