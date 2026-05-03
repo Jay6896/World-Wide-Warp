@@ -35,7 +35,7 @@ func start_hook(hookPosition, player):
 	spring_joint.stiffness = 400.0 # handles stiffness/bounciness
 	spring_joint.damping = 40.0
 	
-	player_anchor.linear_damp = 0.8 # handles floatiness / air resistance
+	player_anchor.linear_damp = 0.4 # handles floatiness / air resistance
 	
 	player_anchor.lock_rotation = true
 	
@@ -86,6 +86,10 @@ func _physics_process(delta: float) -> void:
 	
 	if is_instance_valid(player_node):
 		player_node.global_position = player_anchor.global_position
+		
+		# tilt
+		var angle_to_anchor = player_node.global_position.direction_to(anchor.global_position).angle()
+		player_node.rotation = angle_to_anchor + (PI / 2.0)
 	
 	# Pressing jump OR swing detaches the rope and launches the player
 	if Input.is_action_just_pressed("jump") or Input.is_action_just_pressed("swing"):
